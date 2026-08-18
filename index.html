@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balolândia</title>
+<link rel="icon" href="favicon.ico" type="icone.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --color-highlight: #FFD43B;
+    --color-button: #FFC928;
+    --color-hover: #FFB800;
+    --color-secondary: #FFE680;
+    --color-bg: #FFFBEA;
+    --color-bg-soft: #FFF5C2;
+    --color-outline: #F2B705;
+    --color-text: #6B4E00;
+    --font-display: 'Baloo 2', system-ui, sans-serif;
+    --font-body: 'Mulish', system-ui, sans-serif;
+    --radius-lg: 22px;
+    --radius-md: 14px;
+    --shadow-soft: 0 10px 30px rgba(107,78,0,0.12);
+    --header-h: 78px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    line-height: 1.5;
+  }
+  h1,h2,h3,h4{ font-family: var(--font-display); margin:0 0 .4em; color: var(--color-text); }
+  p{ margin:0 0 1em; }
+  button{ font-family: inherit; cursor:pointer; }
+  ul{ margin:0; padding:0; list-style:none; }
+  img, svg{ display:block; max-width:100%; }
+  a{ color:inherit; }
+
+  /* ---------- HEADER ---------- */
+  .site-header{
+    position: sticky;
+    top:0;
+    z-index: 100;
+    background: var(--color-bg-soft);
+    border-bottom: 3px solid var(--color-outline);
+  }
+  .header-inner{
+    max-width: 1180px;
+    margin: 0 auto;
+    height: var(--header-h);
+    padding: 0 24px;
+    display:flex;
+    align-items:center;
+    gap: 20px;
+  }
+  .logo-slot{
+    width:50px;
+    height:50px;
+    background-image: url(icone.png);
+  }
+  .brand{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-right: auto;
+    white-space: nowrap;
+  }
+  .brand span{ color: var(--color-hover); }
+
+  .nav-desktop{
+    display:flex;
+    gap: 6px;
+  }
+  .nav-link{
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    padding: 10px 18px;
+    border-radius: 999px;
+    transition: background .2s ease, color .2s ease, transform .15s ease;
+  }
+  .nav-link:hover{ background: var(--color-secondary); }
+  .nav-link.active{ background: var(--color-button); }
+  .nav-link:active{ transform: scale(.96); }
+
+  .hamburger{
+    display:none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 2px solid var(--color-outline);
+    background: var(--color-bg);
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    flex: 0 0 44px;
+  }
+  .hamburger span{
+    width: 22px;
+    height: 3px;
+    background: var(--color-text);
+    border-radius: 3px;
+    transition: transform .25s ease, opacity .2s ease;
+  }
+  .hamburger[aria-expanded="true"] span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
+  .hamburger[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+  .hamburger[aria-expanded="true"] span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
+
+  .nav-mobile{
+    display:none;
+    flex-direction: column;
+    background: var(--color-bg-soft);
+    border-top: 2px solid var(--color-outline);
+    max-height: 0;
+    overflow:hidden;
+    transition: max-height .3s ease;
+  }
+  .nav-mobile.open{ max-height: 260px; }
+  .nav-mobile .nav-link{
+    text-align:left;
+    border-radius: 0;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(107,78,0,0.08);
+  }
+
+  @media (max-width: 760px){
+    .nav-desktop{ display:none; }
+    .hamburger{ display:flex; }
+    .nav-mobile{ display:flex; }
+  }
+
+  /* ---------- LAYOUT / SCREENS ---------- */
+  main{ max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .screen{ display:none; animation: fadeIn .45s ease; }
+  .screen.screen--active{ display:block; }
+  @keyframes fadeIn{ from{ opacity:0; transform: translateY(8px);} to{ opacity:1; transform:none; } }
+
+  /* ---------- HOME ---------- */
+  #home.screen--active{ display:flex; }
+  .hero{
+    width:100%;
+    min-height: calc(100vh - var(--header-h));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position: relative;
+    overflow:hidden;
+    border-radius: var(--radius-lg);
+    margin-top: 20px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,214,128,0.55), transparent 55%),
+      radial-gradient(circle at 80% 75%, rgba(255,201,40,0.35), transparent 50%),
+      var(--color-bg-soft);
+  }
+  .hero-balloons{ position:absolute; inset:0; pointer-events:none; }
+  .hero-balloons .balloon-illustration{
+    position:absolute;
+    width: 90px;
+    animation: floatY 7s ease-in-out infinite;
+  }
+  .hb1{ top: 8%; left: 8%; width: 110px; animation-duration: 8s; }
+  .hb2{ top: 55%; left: 4%; width: 70px; animation-duration: 6.5s; animation-delay: .6s; }
+  .hb3{ top: 12%; right: 8%; width: 95px; animation-duration: 7.5s; animation-delay: .3s; }
+  .hb4{ top: 60%; right: 6%; width: 65px; animation-duration: 6s; animation-delay: 1s; }
+  @keyframes floatY{
+    0%,100%{ transform: translateY(0) rotate(-2deg); }
+    50%{ transform: translateY(-22px) rotate(2deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-balloons .balloon-illustration{ animation: none; }
+  }
+
+  .hero-content{
+    position: relative;
+    z-index: 2;
+    text-align:center;
+    max-width: 640px;
+    padding: 60px 24px;
+  }
+  .hero-eyebrow{
+    display:inline-block;
+    font-family: var(--font-display);
+    font-weight:600;
+    font-size: .85rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    background: var(--color-button);
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  .hero-content h1{
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    line-height: 1.08;
+  }
+  .hero-content p{
+    font-size: 1.1rem;
+    max-width: 480px;
+    margin: 18px auto 30px;
+  }
+
+  .btn-primary{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    background: var(--color-button);
+    color: var(--color-text);
+    border: none;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 16px 32px;
+    border-radius: 999px;
+    box-shadow: var(--shadow-soft);
+    transition: background .2s ease, transform .15s ease;
+  }
+  .btn-primary:hover{ background: var(--color-hover); transform: translateY(-2px); }
+  .btn-primary:active{ transform: translateY(0) scale(.98); }
+
+  .btn-secondary{
+    background: transparent;
+    border: 2px solid var(--color-outline);
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-weight: 700;
+    padding: 12px 26px;
+    border-radius: 999px;
+    transition: background .2s ease;
+  }
+  .btn-secondary:hover{ background: var(--color-secondary); }
+
+  /* ---------- CARDÁPIO ---------- */
+  .section-heading{ text-align:center; max-width: 620px; margin: 48px auto 8px; }
+  .section-heading h2{ font-size: clamp(1.8rem, 3.5vw, 2.4rem); }
+  .section-heading p{ color: rgba(107,78,0,0.75); }
+
+  .cards-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 26px;
+    margin: 40px 0 28px;
+  }
+  .card{
+    background: var(--color-bg-soft);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    overflow:hidden;
+    text-align:left;
+    padding: 0;
+    display:flex;
+    flex-direction:column;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .card:hover{
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--color-outline);
+  }
+  .card:focus-visible{ outline: 3px solid var(--color-hover); outline-offset: 2px; }
+  .card-media{
+    background: var(--color-secondary);
+    padding: 18px 18px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 220px; /* Altura fixa para consistência */
+    overflow: hidden;
+  }
+  .card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Mantém a proporção sem cortar */
+    display: block;
+  }
+  .card-body{ padding: 14px 18px 20px; }
+  .card-body h3{ font-size: 1.15rem; margin-bottom: 4px; }
+  .card-body .card-sub{ font-size: .88rem; color: rgba(107,78,0,0.7); margin:0; }
+  .card-body .card-price{
+    display:inline-block;
+    margin-top: 10px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    background: var(--color-button);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: .85rem;
+  }
+
+  .pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap: 10px;
+    margin: 30px 0 60px;
+  }
+  .page-btn{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--color-outline);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-weight: 700;
+    transition: background .2s ease, color .2s ease;
+  }
+  .page-btn:hover{ background: var(--color-secondary); }
+  .page-btn.active{ background: var(--color-button); }
+
+  /* ---------- DETALHE ---------- */
+  .detail-wrap{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items:center;
+    padding: 48px 0 70px;
+  }
+  .detail-media{
+    background: var(--color-bg-soft);
+    border-radius: var(--radius-lg);
+    padding: 34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height: 400px;
+    overflow: hidden;
+  }
+  .detail-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+  }
+  .detail-media .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+    color: rgba(107,78,0,0.5);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 20px;
+  }
+  .detail-info .card-price{
+    display:inline-block;
+    margin-bottom: 14px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    background: var(--color-button);
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+  .detail-info h2{ font-size: clamp(1.7rem, 3vw, 2.3rem); }
+  .detail-meta{
+    display:flex;
+    gap: 22px;
+    margin: 18px 0 20px;
+    flex-wrap: wrap;
+  }
+  .detail-meta div{
+    background: var(--color-bg);
+    border: 2px solid var(--color-outline);
+    border-radius: var(--radius-md);
+    padding: 10px 16px;
+    font-size: .9rem;
+  }
+  .detail-meta strong{ display:block; font-family: var(--font-display); font-size: 1rem; }
+  .includes-list li{
+    padding: 8px 0 8px 28px;
+    position: relative;
+    border-bottom: 1px dashed rgba(107,78,0,0.2);
+  }
+  .includes-list li:before{
+    content: "✓";
+    position:absolute; left:0; top: 6px;
+    font-size: .9rem;
+  }
+  .detail-actions{ margin-top: 26px; }
+
+  @media (max-width: 760px){
+    .detail-wrap{ grid-template-columns: 1fr; padding-top: 30px; }
+    .detail-media { height: 300px; }
+  }
+
+  /* ---------- SOBRE ---------- */
+  .about-wrap{
+    display:grid;
+    grid-template-columns: 220px 1fr;
+    gap: 44px;
+    align-items:start;
+    padding: 56px 0 80px;
+  }
+  .about-photo{
+    width: 220px;
+    height: 220px;
+    background-image: url(icone.png);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow: hidden;
+  }
+  .about-photo .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    color: rgba(107,78,0,0.5);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 20px;
+  }
+  .about-text h2{ font-size: clamp(1.8rem, 3.5vw, 2.3rem); }
+  .about-text p{ max-width: 560px; }
+  .about-tags{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 18px; }
+  .about-tags span{
+    background: var(--color-secondary);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: .85rem;
+    font-weight: 600;
+  }
+  @media (max-width: 620px){
+    .about-wrap{ grid-template-columns: 1fr; justify-items:center; text-align:center; }
+    .about-text p{ margin-left:auto; margin-right:auto; }
+    .about-tags{ justify-content:center; }
+  }
+
+  footer{
+    text-align:center;
+    padding: 26px 24px 40px;
+    font-size: .82rem;
+    color: rgba(107,78,0,0.65);
+  }
+
+  /* Responsividade geral */
+  @media (max-width:900px){.header-inner{padding:0 18px}main{padding:0 18px}.cards-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.detail-wrap{gap:28px}}
+  @media (max-width:600px){:root{--header-h:68px}.header-inner{height:var(--header-h)}.logo-slot{width:42px;height:42px;flex-basis:42px}.hero{margin-top:12px;min-height:calc(100svh - var(--header-h) - 12px);border-radius:18px}.hero-content{padding:42px 18px}.hero-content h1{font-size:clamp(2rem,10vw,2.7rem)}.hero-content p{font-size:1rem}.btn-primary{width:100%;justify-content:center;padding:14px 20px}.cards-grid{grid-template-columns:1fr;gap:16px;margin-top:28px}.card-media{height:200px}.detail-wrap{grid-template-columns:1fr;padding:30px 0 50px;gap:22px}.detail-media{min-height:260px;padding:14px}.detail-media img,.detail-media .image-placeholder{height:260px}.detail-info .btn-secondary{width:100%}.detail-meta{gap:10px}.detail-meta div{flex:1 1 130px}.about-wrap{grid-template-columns:1fr;padding:40px 0 60px;gap:24px;justify-items:center;text-align:center}.about-photo{width:180px;height:180px}.about-tags{justify-content:center}}
+  @media (max-width:380px){.brand{font-size:1rem}.logo-slot{display:none}.hero-content h1{font-size:1.9rem}.card-media{height:180px}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-slot" aria-hidden="true"><img src="icone.png" alt=""></div>
+    <div class="brand">Balo<span>lândia</span></div>
+    <nav class="nav-desktop" aria-label="Navegação principal">
+      <button class="nav-link active" data-target="home">Home</button>
+      <button class="nav-link" data-target="cardapio">Esculturas</button>
+      <button class="nav-link" data-target="sobre">Sobre nós</button>
+    </nav>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="nav-mobile" id="navMobile" aria-label="Navegação móvel">
+    <button class="nav-link active" data-target="home">Home</button>
+    <button class="nav-link" data-target="cardapio">Esculturas</button>
+    <button class="nav-link" data-target="sobre">Sobre nós</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section class="screen screen--active" id="home">
+    <div class="hero">
+      <div class="hero-balloons" id="heroBalloons"></div>
+      <div class="hero-content">
+        <span class="hero-eyebrow">Esculturas de balões</span>
+        <h1>Transformamos balões em momentos inesquecíveis</h1>
+        <p>Criamos esculturas de balões coloridas, divertidas e personalizadas para deixar festas infantis ainda mais especiais.</p>
+        <button class="btn-primary" id="ctaVerCardapio">Ver nossas esculturas →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CARDÁPIO ================= -->
+  <section class="screen" id="cardapio">
+    <div class="section-heading">
+      <h2>Escolha sua escultura</h2>
+      <p>Conheça algumas das nossas criações. Clique em uma delas para ver os detalhes.</p>
+    </div>
+    <div class="cards-grid" id="cardsGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+
+  <!-- ================= DETALHE ================= -->
+  <section class="screen" id="detalhe">
+    <div class="detail-wrap" id="detailWrap"></div>
+  </section>
+
+  <!-- ================= SOBRE ================= -->
+  <section class="screen" id="sobre">
+    <div class="about-wrap">
+      <div class="about-photo" id="aboutPhoto"><img src="icone.png"></div>
+      <div class="about-text">
+        <h2>Sobre nós</h2>
+        <p>Somos duas sócias apaixonadas por criatividade, festas e pela arte de transformar simples balões em esculturas que encantam crianças e adultos. Criamos cada peça com carinho para tornar cada comemoração única.</p>
+        <p>Aqui você pode contar a história de vocês, como começaram a trabalhar com esculturas de balões e o que torna a dupla especial.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2026 Balolândia — Esculturas de balões. Feito com criatividade e carinho.</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- Dados do cardápio ---------------- */
+  var items = [
+    {name:"Unicórnio",sub:"Magia e encanto em forma de balão!",price:"A partir de R$ 7,50",image:"unicornio.png",desc:"Um encantador unicórnio de balão para deixar a festa ainda mais mágica. Uma ótima escolha para quem ama fantasia e criaturas mágicas.",includes:[""]},
+    {name:"Pikachu",sub:"Diversão para os fãs de Pokémon!",price:"A partir de R$ 5,00",image:"pikachu.png",desc:"Uma divertida escultura do Pikachu feita com balões, perfeita para fãs de Pokémon e para deixar qualquer festa ainda mais especial.",includes:[""]},
+    {name:"Sereia",sub:"Um toque mágico do fundo do mar!",price:"A partir de R$ 10,00",image:"sereia.png",desc:"Uma encantadora sereia feita com balões, perfeita para festas temáticas e para quem ama o mundo mágico do fundo do mar.",includes:[""]},
+    {name:"Espada",sub:"Para pequenos aventureiros!",price:"A partir de R$ 5,00",image:"espada.png",desc:"Uma espada feita com balões para transformar a brincadeira em uma verdadeira aventura. Perfeita para pequenos guerreiros e aventureiros.",includes:[""]},
+    {name:"Alien - Toy Story",sub:"Uma diversão de outro planeta!",price:"A partir de R$ 7,50",image:"alien.png",desc:"Uma divertida escultura de alienígena feita com balões, perfeita para festas temáticas e para quem gosta de criaturas de outro planeta.",includes:[""]},
+    {name:"Stitch",sub:"Diversão e fofura em um só balão!",price:"A partir de R$ 7,50",image:"stitch.png",desc:"Uma divertida escultura inspirada no Stitch, perfeita para fãs do personagem e para deixar a festa ainda mais divertida.",includes:[""]},
+    {name:"Dinossauro",sub:"Uma aventura jurássica para a criançada!",price:"A partir de R$ 10,00",image:"dino.png",desc:"Um incrível dinossauro feito com balões para deixar a brincadeira ainda mais jurássica. Uma ótima opção para pequenos fãs de dinossauros.",includes:[""]},
+    {name:"Girafa",sub:"Uma fofura de pescoço comprido!",price:"A partir de R$ 5,00",image:"girafa.png",desc:"Uma simpática girafa de balão, com seu pescoço comprido e visual divertido. Uma ótima opção para festas com tema de animais.",includes:[""]},
+    {name:"Tigrão",sub:"Energia e diversão para a criançada!",price:"A partir de R$ 10,00",image:"tigrao.png",desc:"Uma divertida escultura inspirada no Tigrão, perfeita para crianças que adoram personagens alegres, brincalhões e cheios de energia.",includes:[""]},
+    {name:"Coelho",sub:"Uma fofura que combina com qualquer festa!",price:"A partir de R$ 5,00",image:"coelho.png",desc:"Um coelhinho de balão simpático e divertido, perfeito para crianças e festas com temas fofos e coloridos.",includes:[""]},
+    {name:"Princesas",sub:"Um toque de magia e fantasia!",price:"A partir de R$ 5,00",image:"princesa.png",desc:"Esculturas inspiradas no mundo das princesas, perfeitas para festas infantis cheias de magia, fantasia e encanto.",includes:[""]},
+    {name:"Arma",sub:"Diversão garantida na brincadeira!",price:"A partir de R$ 5,00",image:"arma.png",desc:"Uma escultura de balão em formato de arma, ideal para brincadeiras e momentos de diversão nas festas.",includes:[""]}
+  ];
+
+  var PER_PAGE = 8;
+  var currentPage = 0;
+  var lastPage = 0;
+
+  /* ---------------- Navegação entre telas ---------------- */
+  var screens = document.querySelectorAll(".screen");
+  var navLinks = document.querySelectorAll(".nav-link");
+
+  function showScreen(name){
+    screens.forEach(function(s){ s.classList.toggle("screen--active", s.id === name); });
+    navLinks.forEach(function(l){ l.classList.toggle("active", l.dataset.target === name); });
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+    closeMobileMenu();
+  }
+
+  navLinks.forEach(function(link){
+    link.addEventListener("click", function(){ showScreen(link.dataset.target); });
+  });
+
+  document.getElementById("ctaVerCardapio").addEventListener("click", function(){
+    showScreen("cardapio");
+  });
+
+  /* ---------------- Menu hambúrguer ---------------- */
+  var hamburgerBtn = document.getElementById("hamburgerBtn");
+  var navMobile = document.getElementById("navMobile");
+
+  function closeMobileMenu(){
+    navMobile.classList.remove("open");
+    hamburgerBtn.setAttribute("aria-expanded", "false");
+  }
+
+  hamburgerBtn.addEventListener("click", function(){
+    var isOpen = navMobile.classList.toggle("open");
+    hamburgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+
+  /* ---------------- Cards do cardápio ---------------- */
+  var cardsGrid = document.getElementById("cardsGrid");
+  var pagination = document.getElementById("pagination");
+
+  function renderCards(page){
+    currentPage = page;
+    cardsGrid.innerHTML = "";
+    var start = page * PER_PAGE;
+    var pageItems = items.slice(start, start + PER_PAGE);
+
+    pageItems.forEach(function(item, i){
+      var realIndex = start + i;
+      var card = document.createElement("button");
+      card.className = "card";
+      card.type = "button";
+      card.innerHTML =
+        '<div class="card-media">' + (item.image ? '<img src="' + item.image + '" alt="' + item.name + '" loading="lazy">' : '<div class="image-placeholder">IMAGEM DA ESCULTURA<br>100% × 220px</div>') + '</div>' +
+        '<div class="card-body">' +
+          '<h3>' + item.name + '</h3>' +
+          '<p class="card-sub">' + item.sub + '</p>' +
+          '<span class="card-price">' + item.price + '</span>' +
+        '</div>';
+      card.addEventListener("click", function(){ openDetail(realIndex); });
+      cardsGrid.appendChild(card);
+    });
+
+    renderPagination();
+  }
+
+  function renderPagination(){
+    lastPage = Math.max(0, Math.ceil(items.length / PER_PAGE) - 1);
+    pagination.innerHTML = "";
+    if (lastPage === 0) return;
+    for (var p = 0; p <= lastPage; p++){
+      (function(pageNum){
+        var btn = document.createElement("button");
+        btn.className = "page-btn" + (pageNum === currentPage ? " active" : "");
+        btn.type = "button";
+        btn.textContent = pageNum + 1;
+        btn.addEventListener("click", function(){ renderCards(pageNum); });
+        pagination.appendChild(btn);
+      })(p);
+    }
+  }
+
+  /* ---------------- Tela de detalhe ---------------- */
+  var detailWrap = document.getElementById("detailWrap");
+
+  function openDetail(index){
+    var item = items[index];
+    var includesHtml = item.includes.map(function(txt){ return "<li>" + txt + "</li>"; }).join("");
+
+    detailWrap.innerHTML =
+      '<div class="detail-media">' + (item.image ? '<img src="' + item.image + '" alt="' + item.name + '">' : '<div class="image-placeholder">IMAGEM DA ESCULTURA<br>520 × 360px</div>') + '</div>' +
+      '<div class="detail-info">' +
+        '<button class="btn-secondary" id="backToCardapio">← Voltar ao cardápio</button>' +
+        '<span class="card-price" style="margin-top:18px;">' + item.price + '</span>' +
+        '<h2>' + item.name + '</h2>' +
+        '<p>' + item.desc + '</p>' +
+        '<div class="detail-meta">' +
+          
+        '</div>' +
+
+        '<div class="detail-actions">' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById("backToCardapio").addEventListener("click", function(){
+      showScreen("cardapio");
+    });
+
+
+    showScreen("detalhe");
+  }
+
+  /* ---------------- Foto da tela Sobre ---------------- */
+  document.getElementById("aboutPhoto").innerHTML = '<div class="image-placeholder"><img src="icone.png" ></img></div>';
+
+  /* ---------------- Inicialização ---------------- */
+  renderCards(0);
+
+})();
+</script>
+
+</body>
+</html>
